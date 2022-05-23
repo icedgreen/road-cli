@@ -12,6 +12,7 @@ python3 road-cli.py [-h] [-a] [-d] [-D DIRECTORY] [-s SEARCH] [-H]
   -s --search         specify search query
   -H --history        set history mode
 ```
+
 # Dependencies
-- python 3.10
+- python 3.10 or newer
 - marktext (in PATH)
