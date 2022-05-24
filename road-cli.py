@@ -8,14 +8,6 @@ history_file = open(history_dir, "a")
 history_file.close()
 
 # parse command line arguments
-#
-# arguments are:
-#
-# -a --all          to specify all chapters
-# -d --download     to specify download mode
-# -D --directory    to specify download mode and download directory
-# -s --search       to specify a search query
-# -h --history      to open history file
 import argparse
 
 parser = argparse.ArgumentParser()
