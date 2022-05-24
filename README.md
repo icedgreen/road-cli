@@ -1,5 +1,5 @@
 # road-cli
-### This program scrapes <a url="royalroad.com">royalroad.com</a> for fictions and displays them in <a url="https://github.com/marktext/marktext">marktext</a>.
+### This program scrapes [royalroad.com](https://royalroad.com) for fictions and displays them in [marktext](https://github.com/marktext/marktext).
 You can select one or a range of chapters to read or download, and they will be combined into one mardown file. All fictions that are read with the program will have their last selected chapter saved, and can be continued if history mode is selected.
 
 # Usage
