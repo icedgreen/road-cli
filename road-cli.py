@@ -143,7 +143,7 @@ if len(chapters) == 0:
 chapter_selection_start = selection.history_index
 chapter_selection_end = -1
 chapter_input = ""
-is_output = True
+is_output = not spec_all
 
 while True:
     print("\n" + selection.title)
@@ -161,12 +161,13 @@ while True:
         print("a - select all chapters")
         print("d - delete fiction from history")
 
+    else:
         is_output = True
 
     if is_history:
         is_history = False
     else:
-        while True:
+        while not spec_all:
             chapter_input = input("Enter selection (leave empty to quit): ")
             if len(chapter_input) == 1 and chapter_input in "flnpsrad":
                 break
@@ -174,6 +175,10 @@ while True:
                 exit()
             else:
                 print("ERROR: Invalid input '" + chapter_input + "'")
+
+    if spec_all:
+        chapter_input = "a"
+        spec_all = False
 
     num_select = 1
     match(chapter_input):
