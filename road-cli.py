@@ -140,7 +140,7 @@ if len(chapters) == 0:
     print("ERROR: Fiction has no chapters")
     exit()
 
-chapter_selection_start = selection.history_index
+chapter_selection_start = int(selection.history_index)
 chapter_selection_end = -1
 chapter_input = ""
 is_output = not spec_all
@@ -148,7 +148,7 @@ is_output = not spec_all
 while True:
     print("\n" + selection.title)
     if chapter_selection_start != None:
-        print(chapters[int(chapter_selection_start)].title, "\n")
+        print(chapters[chapter_selection_start].title, "\n")
 
     if is_output:
         print("\nChapter commands")
@@ -187,13 +187,13 @@ while True:
         case "l":
             chapter_selection_start = len(chapters) - 1
         case "n":
-            if 0 <= int(chapter_selection_start) + 1 < len(chapters):
+            if 0 <= chapter_selection_start + 1 < len(chapters):
                 chapter_selection_start += 1
             else:
                 print("ERROR: The currently selected chapter is the latest/last chapter")
                 is_output = False
         case "p":
-            if 0 <= int(chapter_selection_start) - 1 < len(chapters):
+            if 0 <= chapter_selection_start - 1 < len(chapters):
                 chapter_selection_start -= 1
             else:
                 print("ERROR: The currently selected chapter is the first one")
