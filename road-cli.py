@@ -144,7 +144,7 @@ chapter_selection_start = None
 try:
     chapter_selection_start = int(selection.history_index)
 except:
-    pass # avoid int conversion of nonetype
+    pass
 chapter_selection_end = -1
 chapter_input = ""
 is_output = not spec_all
@@ -307,6 +307,8 @@ while True:
         temp_file.write(chapter_content)
         temp_file.write("\n\n---\n\n")
         temp_file.close()
+
+        print("Downloaded chapter:", chapters[int(chapter)].title)
 
         if chapter == chapter_selection_end or chapter_selection_end == -1:
             subprocess.call(["marktext", temp_dir])
