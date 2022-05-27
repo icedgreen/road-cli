@@ -140,7 +140,11 @@ if len(chapters) == 0:
     print("ERROR: Fiction has no chapters")
     exit()
 
-chapter_selection_start = int(selection.history_index)
+chapter_selection_start = None
+try:
+    chapter_selection_start = int(selection.history_index)
+except:
+    pass # avoid int conversion of nonetype
 chapter_selection_end = -1
 chapter_input = ""
 is_output = not spec_all
