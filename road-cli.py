@@ -99,6 +99,8 @@ while True:
 
     if selected_index == "":
         exit()
+    elif not selected_index.isnumeric():
+        print("ERROR: Input is not numeric:", selected_index)
     elif not (0 <= int(selected_index) < len(fictions)):
         print("ERROR: Selection out of range 0 -", len(fictions) - 1)
     else:
@@ -297,18 +299,22 @@ while True:
     while True:
         resp = requests.get(base_url + chapters[int(chapter)].url)
 
-        chapter_inner = re.search(r'<div class="chapter-inner chapter-content">(.*?)</div>\n                <h6', resp.text, re.MULTILINE | re.DOTALL).group()
-        chapter_content = ''.join(chapter_inner)
-        chapter_content = re.sub('> +<', '><', chapter_content)
-        chapter_content = re.sub(' +<', '<', chapter_content)
+        if resp.status_code in range(200, 299):
+            chapter_inner = re.search(r'<div class="chapter-inner chapter-content">(.*?)</div>\n                <h6', resp.text, re.MULTILINE | re.DOTALL).group()
+            chapter_content = ''.join(chapter_inner)
+            chapter_content = re.sub('> +<', '><', chapter_content)
+            chapter_content = re.sub(' +<', '<', chapter_content)
 
-        temp_file = open(temp_dir, "a")
-        temp_file.write("# " + chapters[int(chapter)].title + "\n")
-        temp_file.write(chapter_content)
-        temp_file.write("\n\n---\n\n")
-        temp_file.close()
+            temp_file = open(temp_dir, "a")
+            temp_file.write("# " + chapters[int(chapter)].title + "\n")
+            temp_file.write(chapter_content)
+            temp_file.write("\n\n---\n\n")
+            temp_file.close()
 
-        print("Downloaded chapter:", chapters[int(chapter)].title)
+            print("Downloaded chapter:", chapters[int(chapter)].title)
+        else:
+            print("ERROR: Website returned status code", resp.status_code)
+            exit()
 
         if chapter == chapter_selection_end or chapter_selection_end == -1:
             subprocess.call(["marktext", temp_dir])
