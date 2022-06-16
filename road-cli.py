@@ -294,7 +294,11 @@ while True:
    # get chapter from url and open or download
     chapter = chapter_selection_start
 
-    temp_dir = selection.title + ".md"
+    temp_dir = selection.title + " " + str(chapter_selection_start)
+    if chapter_selection_end != -1:
+        temp_dir += "-" + str(chapter_selection_end)
+    temp_dir += ".md"
+
     if is_download:
         if download_dir != None:
             temp_dir = download_dir + "/" + temp_dir
@@ -325,6 +329,7 @@ while True:
 
         if chapter == chapter_selection_end or chapter_selection_end == -1:
             subprocess.call(["marktext", temp_dir])
+            break
 
         chapter += 1
 
