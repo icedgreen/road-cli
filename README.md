@@ -13,6 +13,12 @@ python3 road-cli.py [-h] [-a] [-d] [-D DIRECTORY] [-s SEARCH] [-H]
   -H --history        set history mode
 ```
 
+### Setup
+1. Download and install [marktext](https://github.com/marktext/marktext/releases)
+2. Download road-cli.py 
+3. Add marktext to PATH
+
 ### Dependencies
 - python 3.10 or newer
+- python requests module (should be default on linux; will try to install if it does not detect the module)
 - marktext (in PATH)
