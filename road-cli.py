@@ -6,8 +6,8 @@ import subprocess
 import pkg_resources
 
 if {'requests'} - {pkg.key for pkg in pkg_resources.working_set}:
-    print("Required package requests is being installed...")
-    subprocess.check_call([python, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
+    print("Required package 'requests' is being installed...")
+    subprocess.check_call(['python', '-m', 'pip', 'install', 'requests'], stdout=subprocess.DEVNULL)
 
 # create history file if does not exist
 from os.path import expanduser
@@ -294,14 +294,14 @@ while True:
    # get chapter from url and open or download
     chapter = chapter_selection_start
 
-    temp_dir = "'" + selection.title + ".md'"
+    temp_dir = selection.title + ".md"
     if is_download:
         if download_dir != None:
             temp_dir = download_dir + "/" + temp_dir
         else:
             temp_dir = "./" + temp_dir
     else:
-        temp_dir = expanduser("/tmp/") + selection.title + ".md"
+        temp_dir = expanduser("/tmp/") + temp_dir
 
     while True:
         resp = requests.get(base_url + chapters[int(chapter)].url)
@@ -325,9 +325,6 @@ while True:
 
         if chapter == chapter_selection_end or chapter_selection_end == -1:
             subprocess.call(["marktext", temp_dir])
-            if not is_download:
-                subprocess.call(["rm", temp_dir])
-            break
 
         chapter += 1
 
