@@ -1,5 +1,14 @@
 # /bin/python3 road-cli
 
+# install requests module if not present
+import sys
+import subprocess
+import pkg_resources
+
+if {'requests'} - {pkg.key for pkg in pkg_resources.working_set}:
+    print("Required package requests is being installed...")
+    subprocess.check_call([python, '-m', 'pip', 'install', *missing], stdout=subprocess.DEVNULL)
+
 # create history file if does not exist
 from os.path import expanduser
 
@@ -136,8 +145,6 @@ else:
     exit()
 
 # loop with chapter list
-import subprocess
-
 if len(chapters) == 0:
     print("ERROR: Fiction has no chapters")
     exit()
@@ -287,7 +294,7 @@ while True:
    # get chapter from url and open or download
     chapter = chapter_selection_start
 
-    temp_dir = selection.title + ".md"
+    temp_dir = "'" + selection.title + ".md'"
     if is_download:
         if download_dir != None:
             temp_dir = download_dir + "/" + temp_dir
