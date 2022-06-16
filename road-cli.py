@@ -328,7 +328,7 @@ while True:
             exit()
 
         if chapter == chapter_selection_end or chapter_selection_end == -1:
-            subprocess.call(["marktext", temp_dir])
+            subprocess.run(["marktext", temp_dir])
             break
 
         chapter += 1
