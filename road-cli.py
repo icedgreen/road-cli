@@ -67,7 +67,7 @@ if is_history:
     print("\nHistory:")
     for i in range(len(fictions)):
         resp = requests.get(base_url + fictions[i].href)
-        fictions[i].chapters = re.findall(r'<div class="actions"><span class="label label-default pull-right">(.*?) Chapters</span></div>', resp.text)[0]
+        fictions[i].chapters = re.findall(r'>(.*?) Chapters</span>', resp.text)[0]
 else:
     while len(fictions) == 0:
         if query == None:

@@ -4,7 +4,9 @@
 You can select one or a range of chapters to read or download, and they will be combined into one mardown file. All fictions that are read with the program will have their last selected chapter saved, and can be continued if history mode is selected.
 
 ### Usage
+
 In your terminal emulator (cmd or powershell on windows)
+
 ```
 python3 road-cli.py [-h] [-a] [-d] [-D DIRECTORY] [-s SEARCH] [-H]
   -h --help           show help message
