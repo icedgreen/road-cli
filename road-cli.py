@@ -315,6 +315,8 @@ while True:
             chapter_content = ''.join(chapter_inner)
             chapter_content = re.sub('> +<', '><', chapter_content)
             chapter_content = re.sub(' +<', '<', chapter_content)
+            chapter_content = re.sub('(?<=.)<em>', ' <em>', chapter_content)
+            chapter_content = re.sub('</em>(?=[a-zA-Z])', '</em> ', chapter_content)
 
             temp_file = open(temp_dir, "a")
             temp_file.write("# " + chapters[int(chapter)].title + "\n")
