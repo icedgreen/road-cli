@@ -15,6 +15,7 @@ python3 road-cli.py [-h] [-a] [-d] [-D DIRECTORY] [-s SEARCH] [-H]
   -D --directory      set download mode and download directory
   -s --search         specify search query
   -H --history        set history mode
+  -c --convert        convert to epub (requires pandoc)
 ```
 
 ### Setup
@@ -29,3 +30,4 @@ python3 road-cli.py [-h] [-a] [-d] [-D DIRECTORY] [-s SEARCH] [-H]
 - python 3.10 or newer
 - python requests module (should be default on linux; will try to install if it does not detect the module)
 - marktext (in PATH)
+- pandoc (optional)

@@ -25,6 +25,7 @@ parser.add_argument("-d", "--download", help="download chapter", action="store_t
 parser.add_argument("-D", "--directory", help="download chapter to specified directory")
 parser.add_argument("-s", "--search", help="search for fiction")
 parser.add_argument("-H", "--history", help="open history file", action="store_true")
+parser.add_argument("-c", "--convert", help="convert to epub (requires pandoc)", action="store_true")
 args = parser.parse_args()
 
 is_download = args.download
@@ -34,6 +35,7 @@ if download_dir != None:
 spec_all = args.all
 query = args.search
 is_history = args.history
+is_convert = args.convert
 
 # do history file stuff
 import re
@@ -317,6 +319,7 @@ while True:
             chapter_content = re.sub(' +<', '<', chapter_content)
             chapter_content = re.sub('(?<=.)<em>', ' <em>', chapter_content)
             chapter_content = re.sub('</em>(?=[a-zA-Z])', '</em> ', chapter_content)
+            chapter_content = re.sub('<h6', '', chapter_content)
 
             temp_file = open(temp_dir, "a")
             temp_file.write("# " + chapters[int(chapter)].title + "\n")
@@ -330,6 +333,8 @@ while True:
             exit()
 
         if chapter == chapter_selection_end or chapter_selection_end == -1:
+            if is_convert:
+                subprocess.run(["pandoc", temp_dir, "-o", (temp_dir + ".epub")])
             subprocess.run(["marktext", temp_dir])
             break
 
