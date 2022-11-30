@@ -31,4 +31,5 @@ python3 road-cli.py [-h] [-a] [-d] [-c] [-D DIRECTORY] [-s SEARCH] [-H]
 - python requests module (should be default on linux; will try to install if it does not detect the module)
 - marktext (in PATH)
 - pandoc (optional)
-**Note:** pandoc does not alwys convert every chapter to epub correctly and can cause errors with rebdering in certain applications. 
+
+**Note:** pandoc does not always convert every chapter to epub correctly and so can cause errors with rendering in certain applications. 
