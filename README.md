@@ -8,7 +8,7 @@ You can select one or a range of chapters to read or download, and they will be 
 In your terminal emulator (cmd or powershell on windows)
 
 ```
-python3 road-cli.py [-h] [-a] [-d] [-c] [-D DIRECTORY] [-s SEARCH] [-H]
+python3 road-cli.py [-h] [-a] [-d] [-D DIRECTORY] [-s SEARCH] [-S] [-H] [-c] [-i]
   -h --help           show help message
   -a --all            specify all chapters
   -d --download       set download mode
