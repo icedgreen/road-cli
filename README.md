@@ -8,16 +8,22 @@ You can select one or a range of chapters to read or download, and they will be 
 In your terminal emulator (cmd or powershell on windows)
 
 ```
-python3 road-cli.py [-h] [-a] [-d] [-D DIRECTORY] [-s SEARCH] [-S] [-H] [-c] [-i]
-  -h --help           show help message
-  -a --all            specify all chapters
-  -d --download       set download mode
-  -D --directory      set download mode and download directory
-  -s --search         specify search query
-  -H --history        set history mode
-  -S, --split         split range of chapters into seperate files
-  -c, --convert       convert to epub (requires pandoc)
-  -i, --ignore        ignores file (does not open in marktext)
+> python3 road-cli.py -h
+usage: road-cli.py [-h] [-a] [-d] [-D DIRECTORY] [-s SEARCH] [-S] [-H] [-c] [-i] [-l LINK] [-t] [-I]
+
+options:
+  -h, --help                            show this help message and exit
+  -a, --all                             select all chapters
+  -d, --download                        download chapter
+  -D DIRECTORY, --directory DIRECTORY   download chapter to specified directory
+  -s SEARCH, --search SEARCH            search for fiction
+  -S, --split                           split range of chapters into seperate files
+  -H, --history                         open history file
+  -c, --convert                         convert to epub (requires pandoc)
+  -i, --ignore                          ignores file (does not open in marktext)
+  -l LINK, --link LINK                  link to next chapter at end of chapter (1 or 2 brackets)
+  -t, --no-title                        do not include chapter titles
+  -I, --index                           prefix chapter titles with index
 ```
 
 ### Setup

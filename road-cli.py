@@ -28,6 +28,9 @@ parser.add_argument("-S", "--split", help="split range of chapters into seperate
 parser.add_argument("-H", "--history", help="open history file", action="store_true")
 parser.add_argument("-c", "--convert", help="convert to epub (requires pandoc)", action="store_true")
 parser.add_argument("-i", "--ignore", help="ignores file (does not open in marktext)", action="store_true")
+parser.add_argument("-l", "--link", help="link to next chapter at end of chapter (1 or 2 brackets)")
+parser.add_argument("-t", "--no-title", help="do not include chapter titles", action="store_true")
+parser.add_argument("-I", "--index", help="prefix chapter titles with index", action="store_true")
 args = parser.parse_args()
 
 is_download = args.download
@@ -40,6 +43,9 @@ is_history = args.history
 is_convert = args.convert
 is_split = args.split
 is_ignore = args.ignore
+link_type = args.link
+is_untitled = args.link
+is_indexed = args.index
 
 # do history file stuff
 import re
@@ -154,6 +160,11 @@ else:
 if len(chapters) == 0:
     print("ERROR: Fiction has no chapters")
     exit()
+else:
+    for c in range(len(chapters)):
+        if is_indexed:
+            chapters[c].title = str(c) + " - " + chapters[c].title
+        chapters[c].title = chapters[c].title.rstrip()
 
 chapter_selection_start = None
 try:
@@ -334,14 +345,26 @@ while True:
 
             if is_split:
                 temp_file = open(temp_dir + "/" + chapters[int(chapter)].title + ".md", "a")
-                temp_file.write("# " + chapters[int(chapter)].title + "\n")
+                if not is_untitled:
+                    temp_file.write("# " + chapters[int(chapter)].title + "\n")
                 temp_file.write(chapter_content)
+                if int(chapter) < len(chapters) - 1:
+                    if link_type in ["one", "o", "1"]:
+                        temp_file.write("[" + chapters[int(chapter) + 1].title + "]")
+                    else:
+                        temp_file.write("[[" + chapters[int(chapter) + 1].title + "]]")
                 temp_file.close()
             else:
                 temp_file = open(temp_dir + ".md", "a")
-                temp_file.write("# " + chapters[int(chapter)].title + "\n")
+                if not is_untitled:
+                    temp_file.write("# " + chapters[int(chapter)].title + "\n")
                 temp_file.write(chapter_content)
                 temp_file.write("\n\n---\n\n")
+                if chapter_selection_end == chapter and int(chapter) < len(chapters) - 1:
+                    if link_type in ["one", "o", "1"]:
+                        temp_file.write("[" + chapters[int(chapter) + 1].title + "]")
+                    else:
+                        temp_file.write("[[" + chapters[int(chapter) + 1].title + "]]")
                 temp_file.close()
 
             print("Downloaded chapter:", chapters[int(chapter)].title)
