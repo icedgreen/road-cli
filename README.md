@@ -8,7 +8,7 @@ You can select one or a range of chapters to read or download, and they will be 
 In your terminal emulator (cmd or powershell on windows)
 
 ```
-python3 road-cli.py [-h] [-a] [-d] [-D DIRECTORY] [-s SEARCH] [-S] [-H] [-c] [-i]
+python3 road-cli.py [-h] [-a] [-d] [-c] [-D DIRECTORY] [-s SEARCH] [-H]
   -h --help           show help message
   -a --all            specify all chapters
   -d --download       set download mode
@@ -33,3 +33,5 @@ python3 road-cli.py [-h] [-a] [-d] [-D DIRECTORY] [-s SEARCH] [-S] [-H] [-c] [-i
 - python requests module (should be default on linux; will try to install if it does not detect the module)
 - marktext (in PATH)
 - pandoc (optional)
+
+**Note:** pandoc does not always convert every chapter to epub correctly and so can cause errors with rendering in certain applications. 
