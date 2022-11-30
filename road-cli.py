@@ -10,9 +10,9 @@ if {'requests'} - {pkg.key for pkg in pkg_resources.working_set}:
     subprocess.check_call(['python', '-m', 'pip', 'install', 'requests'], stdout=subprocess.DEVNULL)
 
 # create history file if does not exist
-from os.path import expanduser
+import os
 
-history_dir = expanduser("~") + "/.road-cli_history"
+history_dir = os.path.expanduser("~") + "/.road-cli_history"
 history_file = open(history_dir, "a")
 history_file.close()
 
@@ -24,8 +24,10 @@ parser.add_argument("-a", "--all", help="select all chapters", action="store_tru
 parser.add_argument("-d", "--download", help="download chapter", action="store_true")
 parser.add_argument("-D", "--directory", help="download chapter to specified directory")
 parser.add_argument("-s", "--search", help="search for fiction")
+parser.add_argument("-S", "--split", help="split range of chapters into seperate files", action="store_true")
 parser.add_argument("-H", "--history", help="open history file", action="store_true")
 parser.add_argument("-c", "--convert", help="convert to epub (requires pandoc)", action="store_true")
+parser.add_argument("-i", "--ignore", help="ignores file (does not open in marktext)", action="store_true")
 args = parser.parse_args()
 
 is_download = args.download
@@ -36,6 +38,8 @@ spec_all = args.all
 query = args.search
 is_history = args.history
 is_convert = args.convert
+is_split = args.split
+is_ignore = args.ignore
 
 # do history file stuff
 import re
@@ -231,6 +235,9 @@ while True:
                         if chapter_search in chapters[i].title:
                             search_results.append(chapters[i])
 
+                    if chapter_search.isdigit() and (chapters[i].title not in chapter_search):
+                        search_results.append(chapters[i])
+
                 for i in range(len(search_results)):
                     print("[" + str(i) + "] " + search_results[i].title + " (Released " + search_results[i].date + ")")
 
@@ -299,7 +306,6 @@ while True:
     temp_dir = selection.title + " " + str(chapter_selection_start)
     if chapter_selection_end != -1:
         temp_dir += "-" + str(chapter_selection_end)
-    temp_dir += ".md"
 
     if is_download:
         if download_dir != None:
@@ -307,7 +313,12 @@ while True:
         else:
             temp_dir = "./" + temp_dir
     else:
-        temp_dir = expanduser("/tmp/") + temp_dir
+        temp_dir = os.path.expanduser("/tmp/") + temp_dir
+
+    try:
+        os.mkdir(temp_dir + "/")
+    except OSError as error:
+        print(error)
 
     while True:
         resp = requests.get(base_url + chapters[int(chapter)].url)
@@ -321,11 +332,17 @@ while True:
             chapter_content = re.sub('</em>(?=[a-zA-Z])', '</em> ', chapter_content)
             chapter_content = re.sub('<h6', '', chapter_content)
 
-            temp_file = open(temp_dir, "a")
-            temp_file.write("# " + chapters[int(chapter)].title + "\n")
-            temp_file.write(chapter_content)
-            temp_file.write("\n\n---\n\n")
-            temp_file.close()
+            if is_split:
+                temp_file = open(temp_dir + "/" + chapters[int(chapter)].title + ".md", "a")
+                temp_file.write("# " + chapters[int(chapter)].title + "\n")
+                temp_file.write(chapter_content)
+                temp_file.close()
+            else:
+                temp_file = open(temp_dir + ".md", "a")
+                temp_file.write("# " + chapters[int(chapter)].title + "\n")
+                temp_file.write(chapter_content)
+                temp_file.write("\n\n---\n\n")
+                temp_file.close()
 
             print("Downloaded chapter:", chapters[int(chapter)].title)
         else:
@@ -334,8 +351,12 @@ while True:
 
         if chapter == chapter_selection_end or chapter_selection_end == -1:
             if is_convert:
-                subprocess.run(["pandoc", temp_dir, "-o", (temp_dir + ".epub")])
-            subprocess.run(["marktext", temp_dir])
+                if is_split:
+                    print("Note: Do not split with pandoc - ignoring conversion...")
+                else:
+                    subprocess.run(["pandoc", temp_dir, "-o", (temp_dir[:-3] + ".epub")])
+            if not is_ignore:
+                subprocess.run(["marktext", temp_dir])
             break
 
         chapter += 1
@@ -358,7 +379,6 @@ while True:
             history_file_contents.append(line)
 
     history_file.close()
-
     if not contains_title:
         history_file = open(history_dir, "a")
         history_file.write(selection.title + "§§§" + selection.href + "§§§" + chapters[chapter].title + "§§§" + str(chapter) + "\n")
